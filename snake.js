@@ -1,14 +1,14 @@
 
 let blockSize = 25;
-let snakeHeadX = 375;
-let snakeHeadY = 375;
-let velocityX = 0;
-let velocityY = 0;
-let foodx = 300;
-let foody = 300;
-let gameover = false;
-let snakeBody = [];
-let score = 0;
+let snakeHeadX ;
+let snakeHeadY ;
+let velocityX ;
+let velocityY ;
+let foodx;
+let foody;
+let gameover;
+let snakeBody;
+let score;
 class snakeSection {
     constructor(x, y) {
         this.x = x
@@ -40,6 +40,11 @@ addEventListener("keydown", e => {
     else if (e.code == "ArrowRight" && velocityX != -25) {
         velocityX = 25;
         velocityY = 0;
+    }
+
+
+    if(gameover){
+        start()
     }
 })
 
@@ -139,7 +144,18 @@ function update() {
 }
 
 //set up
-function draw() {
+function start() {
+
+ blockSize = 25;
+ snakeHeadX = 375;
+ snakeHeadY = 375;
+ velocityX = 0;
+ velocityY = 0;
+ foodx = 300;
+ foody = 300;
+ gameover = false;
+ snakeBody = [];
+ score = 0;
     //set initial head in list
     snakeBody.push(new snakeSection(snakeHeadX, snakeHeadY))
 
@@ -147,4 +163,4 @@ function draw() {
 
 
 }
-draw()
+start()
