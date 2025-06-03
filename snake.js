@@ -128,7 +128,16 @@ if(!gameover){
     setTimeout(update,125);
 
 }else{
-    window.alert("Game over your score was " + score)
+   if(localStorage.getItem("score") == null){
+    localStorage.setItem("score", score)
+     window.alert("Game over your score was " + score)
+   }else if(localStorage.getItem("score") > score){
+    window.alert("Game over your score was " + score + " past high score was " + localStorage.getItem("score"))
+   }else{
+    window.alert("game over, new high score " + score)
+    localStorage.setItem("score",score)
+   }
+   
 }
 }
 
