@@ -6,9 +6,9 @@ let velocityX= 0;
 let velocityY = 0;
 let foodx=300;
 let foody=300;
-
+let gameover = false;
 let snakeBody =[];
-
+let score =0;
 class snakeSection{
 constructor(x,y){
 this.x=x
@@ -46,10 +46,18 @@ addEventListener("keydown", e=>{
 function hit(){
 //25 as width of square and 500 as size of canvas 
     if(snakeBody[0].x < 0 || (snakeBody[0].x + 25) > 500 || snakeBody[0].y < 0 || (snakeBody[0].y + 25) > 500){
-        return true
-    }else{
-       return false
+        gameover = true
+        console.log("border hit")
     }
+    for (let i = snakeBody.length-1 ; i >= 0; i--) {
+   //as will always hit head on head
+        if(i!=0){
+if(snakeBody[i].x == snakeBody[0].x && snakeBody[i].y == snakeBody[0].y ){
+    gameover = true;
+}
+    }
+    }
+
 
 }
 //to reigister if snake over food.
@@ -70,6 +78,7 @@ if( snakeBody[0].x == foodx && snakeBody[0].y == foody){
    //math.floor => to get rid of floating points
 foodx = (Math.floor((Math.random()*20))*25) 
 foody = (Math.floor((Math.random()*20))*25) 
+score += 1
 }
 
 }
@@ -92,12 +101,14 @@ if(i!=0){
 //so setting section to where one before it was
 snakeBody[i].x = snakeBody[i-1].x
 snakeBody[i].y = snakeBody[i-1].y
-} else if(!(hit())){
-//so doesn't run if at border
-  //done here else the seond element will have the same new position as the head which 
+}else{
+//done here else the seond element will have the same new position as the head which 
   snakeBody[0].x =  snakeBody[0].x + velocityX;
     snakeBody[0].y =  snakeBody[0].y + velocityY;
 }
+
+  
+
 
 ctx.fillRect(snakeBody[i].x, snakeBody[i].y,25,25)
 }
@@ -108,17 +119,26 @@ function update(){
 
 ctx.fillStyle="white"
 ctx.fillRect(0,0,500,500)
+
 snake()
+hit()
 foodHit()
 food()
-    setTimeout(update,250);
+if(!gameover){
+    setTimeout(update,125);
+
+}else{
+    window.alert("Game over your score was " + score)
+}
 }
 
 //set up
 function draw(){
     //set initial head in list
 snakeBody.push(new snakeSection(snakeHeadX,snakeHeadY))
-    update()
 
+    update()
+    
+    
 }
 draw()
