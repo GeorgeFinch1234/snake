@@ -1,12 +1,21 @@
 
 let blockSize = 25;
-let snakeHeadX=250 
-let snakeHeadY=250 
+let snakeHeadX=375 ;
+let snakeHeadY=375 ;
 let velocityX= 0;
 let velocityY = 0;
-let foodx=150;
-let foody=150;
+let foodx=300;
+let foody=300;
 
+let snakeBody =[];
+
+class snakeSection{
+constructor(x,y){
+this.x=x
+this.y=y
+
+}
+}
 
 
 const ctx = document.getElementById("canvas").getContext("2d");
@@ -36,10 +45,10 @@ addEventListener("keydown", e=>{
 //curnelty just canvas border
 function hit(){
 //25 as width of square and 500 as size of canvas 
-    if(snakeHeadX < 0 || (snakeHeadX + 25) > 500 || snakeHeadY < 0 || (snakeHeadY + 25) > 500){
+    if(snakeBody[0].x < 0 || (snakeBody[0].x + 25) > 500 || snakeBody[0].y < 0 || (snakeBody[0].y + 25) > 500){
         return true
     }else{
-        false
+       return false
     }
 
 }
@@ -50,8 +59,17 @@ function foodHit(){
     //then if top right hits it
 
     //then if got it on x axnies see if if got it on the y axies
-if(snakeHeadX == foodx && snakeHeadY == foody){
+if( snakeBody[0].x == foodx && snakeBody[0].y == foody){
     console.log("hit");
+    snakeBody.push(new snakeSection(foodx,foody))
+    console.log(snakeBody)
+
+    //moves the food
+    // used as 500%25 = 20, eg so have 20 rows, as one row is 25 pixes in this game 
+    //*25 so actually moving it to the correct row
+   //math.floor => to get rid of floating points
+foodx = (Math.floor((Math.random()*20))*25) 
+foody = (Math.floor((Math.random()*20))*25) 
 }
 
 }
@@ -63,22 +81,44 @@ ctx.fillStyle="red";
 
 //500 by 500 is canvas
 function snake(){
+
+//just so don't keep calling command as not needed
+ctx.fillStyle="black";
+for (let i = snakeBody.length-1 ; i >= 0; i--) {
+ 
+//one is head so don't need to worry about that but rest do.
+//as its location is auto done by control 
+if(i!=0){
+//so setting section to where one before it was
+snakeBody[i].x = snakeBody[i-1].x
+snakeBody[i].y = snakeBody[i-1].y
+} else if(!(hit())){
 //so doesn't run if at border
-    if(!(hit())){
-    snakeHeadX = snakeHeadX + velocityX;
-    snakeHeadY = snakeHeadY + velocityY;
+  //done here else the seond element will have the same new position as the head which 
+  snakeBody[0].x =  snakeBody[0].x + velocityX;
+    snakeBody[0].y =  snakeBody[0].y + velocityY;
 }
-    ctx.fillStyle="black";
-    ctx.fillRect(snakeHeadX,snakeHeadY,blockSize,blockSize)
+
+ctx.fillRect(snakeBody[i].x, snakeBody[i].y,25,25)
+}
+    
 }
 
 function update(){
 
 ctx.fillStyle="white"
 ctx.fillRect(0,0,500,500)
-foodHit()
 snake()
+foodHit()
 food()
     setTimeout(update,250);
 }
-update()
+
+//set up
+function draw(){
+    //set initial head in list
+snakeBody.push(new snakeSection(snakeHeadX,snakeHeadY))
+    update()
+
+}
+draw()
