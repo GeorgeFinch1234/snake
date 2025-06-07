@@ -1,4 +1,4 @@
-#Snake
+# Snake
 ## Table of conent
 1. [Goal](#goal)
 2. [How To Play](#"howtoplay")
