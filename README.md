@@ -1,5 +1,5 @@
 # Snake
-## Table of conent
+## Table of content
 1. [Goal](#goal)
 2. [How To Play](#howtoplay)
 3. [Technology](#technology)
